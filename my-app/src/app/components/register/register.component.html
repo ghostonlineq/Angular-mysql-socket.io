@@ -1,0 +1,55 @@
+<div class="container mt=3">
+  <div class="card mt-4" style="min-width: 50rem; margin-top: 15%; margin-left: 65%;">
+    <div class="card-header">
+      <h3>Register Form</h3>
+    </div>
+    <div class="card-container mt-3 ml-3">
+      <div class="card-body">
+        <div class="row justify-content-center mt-3">
+          <div class="col">
+            <form [formGroup]="registerForm">
+              <div class="form-group">
+                <label for="Name">Name</label>
+                <input type="text" class="form-control" placeholder="Enter Name" formControlName="Name" required>
+              </div>
+              <div class="form-group">
+                <label for="Password">Password</label>
+                <input type="password" class="form-control" placeholder="Enter Password" formControlName="Password"
+                  required>
+              </div>
+              <div class="form-group">
+                <label for="Email">Email</label>
+                <input type="text" class="form-control" placeholder="Enter Email" formControlName="Email" required>
+              </div>
+              <div class="form-group">
+                <label for="Phone">Phone</label>
+                <input type="text" class="form-control" placeholder="Enter Phone" formControlName="Phone" required>
+              </div>
+              <div class="form-group">
+                <label for="Gender">Gender</label>
+                <select class="form-control" formControlName="Gender">
+                  <option *ngFor="let item of Genders" value={{item.id}}>{{item.name}}</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="TitleName">Title Name</label>
+                <select class="form-control" formControlName="Titlename">
+                  <option *ngFor="let item of TitleNames" value={{item.id}}>{{item.name}}</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="Status">Status</label>
+                <select class="form-control" formControlName="Status">
+                  <option *ngFor="let item of Status" value={{item.id}}>{{item.name}}</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <button class="btn btn-primary btn-block" type="submit"(click)="onSummit()">Register</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
