@@ -1,22 +1,34 @@
 import { Component, OnInit, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 import { CRUDService } from './../../service/crud.service';
-import { FormGroup, FormBuilder, NgForm } from '@angular/forms';
+import {
+  FormGroup,
+  FormBuilder,
+  NgForm,
+  FormArray,
+  FormControl,
+} from '@angular/forms';
 import { AuthUserService } from './../../service/auth-user.service';
 import { ChatService } from './../../service/chat.service';
 import { Observable } from 'rxjs';
+// import { get } from 'http';
 
 @Component({
   selector: 'app-chat',
   templateUrl: './chat.component.html',
   styleUrls: ['./chat.component.css'],
 })
+
 export class ChatComponent implements OnInit {
   tokenKey: any;
   groupForm: FormGroup;
   anotherUserForm: FormGroup;
   groupType: Array<any> = [];
   listName: Array<any> = [];
+  userNamelist:  Array<any> = [];
+
+  // rows: FormArray;
+  // itemForm: FormGroup;
 
   constructor(
     public formBuilder: FormBuilder,
@@ -28,6 +40,10 @@ export class ChatComponent implements OnInit {
     this.groupForm = this.formBuilder.group({
       name: [''],
       group_type: [],
+      // email: [''],
+      rows: new FormArray([
+        // this.formBuilder.group({email: [""]})
+      ]),
     });
     this.anotherUserForm = this.formBuilder.group({
       nameUser: [''],
@@ -40,10 +56,16 @@ export class ChatComponent implements OnInit {
     });
   }
 
+  get rows() {
+    return this.groupForm.get('rows') as FormArray;
+  }
+
   ngOnInit(): void {
     this.ConnectionSocket();
     this.GetgroupsType();
     this.GetAnotherUser();
+    // this.rows.setValue([this.groupForm.value.rows])
+    // this.rows.setValue(this.groupForm.value.rows[0])
   }
   ConnectionSocket() {
     this.chatService.listen('test Connect').subscribe((res) => {
@@ -71,5 +93,19 @@ export class ChatComponent implements OnInit {
       console.log(data);
       this.listName = data;
     });
+  }
+  onGetUserId(): any {
+    this.chatService.SelectUser(this.groupForm.value.rows).subscribe((data) => {
+      console.log(this.groupForm.value.rows);
+      console.log('UserID:', data);
+    });
+  }
+  onAddRow() {
+    this.rows.push(this.formBuilder.group({email: []}));
+    console.log(this.rows.value);
+
+  }
+  onRemoveRow(rowIndex: number) {
+    this.rows.removeAt(rowIndex);
   }
 }

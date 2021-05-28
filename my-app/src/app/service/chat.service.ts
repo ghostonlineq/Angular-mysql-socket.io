@@ -23,7 +23,7 @@ export class ChatService {
   private socket;
   httpHeaders = new HttpHeaders().set('Content-Type', 'application/json');
 
-  tokenData: any
+  tokenData: any;
 
   constructor(
     private httpClient: HttpClient,
@@ -74,8 +74,11 @@ export class ChatService {
     );
   }
 
-  SelectUser(email: string){
-    let API_URL = `${this.url}api/chat/SelectUser`
+  SelectUser(email: []) {
+    let API_URL = `${this.url}api/chat/chatCollect`;
+    return this.httpClient
+      .post(API_URL,email )
+      .pipe(catchError(this.handleError))
   }
 
   handleError(error: HttpErrorResponse) {
