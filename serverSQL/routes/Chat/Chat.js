@@ -4,8 +4,9 @@ const router = expressFunction.Router();
 const { DB } = require("../../auth");
 
 router.post("/groupChat", async (req, res) => {
-  const { name, group_type } = req.body;
-
+  const { name, group_type, email } = req.body;
+  var result = await FindIdUser(email);
+  console.log(result[0]);
   // example
   //   const {
   //     group_name,
@@ -22,8 +23,22 @@ router.post("/groupChat", async (req, res) => {
       },
     }
   );
+
+  for (let i = 0; i < result.length; i++) {
+    var insertCollector = await DB.query(
+      `CALL database_chat.insert_Collection(:p_register)`,
+      {
+        replacements: {
+          p_register: result[i] || "",
+        },
+      }
+    );
+  }
+
   res.status(200);
   res.json(data);
+  res.json(insertCollector);
+  
   // example
   //   var id = ? ;
   //   for (let i = 0; i < person.length; i++) {
@@ -43,22 +58,22 @@ router.get("/AllUser", async (req, res) => {
 });
 
 async function FindIdUser(email) {
-  console.log(email[0]);
+  console.log(email.length);
   var person = [];
-  for (let i = 0; i < email[0].length; i++) {
+  for (let i = 0; i < email.length; i++) {
     var result = await DB.query(
-      `SELECT id FROM register WHERE Email = '${email[0][i].email}'`
+      `SELECT id FROM register WHERE Email = '${email[i].email}'`
     );
-    person[i] = result[0];
-    console.log(person[i])
-  }
     // console.log(result);
-    return person[0];
-
+    person[i] = result[0][0].id;
+    console.log(person[i]);
+  }
+  // console.log(result);
+  return person;
 }
 
-router.get("/chatCollect", async (req, res) => {
-  const email = [req.body];
+router.post("/chatCollect", async (req, res) => {
+  const email = req.body;
   // for(let i = 0; i< email.length; i++){}
   console.log(email);
   var result = await FindIdUser(email);
