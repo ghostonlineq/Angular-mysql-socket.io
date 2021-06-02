@@ -28,7 +28,7 @@
                     <option *ngFor="let item of groupType[0]" value={{item.id}}>{{item.name}}</option>
                   </select>
                   <p></p>
-                  <div formArrayName="rows" *ngFor="let row of rows.controls; let i = index">
+                  <div formArrayName="email" *ngFor="let row of email.controls; let i = index">
                     <div [formGroupName]="i">
                       <input class="form-control mr-sm-2" formControlName="email" placeholder="Input UserName" />
                       <p></p>

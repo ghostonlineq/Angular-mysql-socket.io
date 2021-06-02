@@ -40,8 +40,7 @@ export class ChatComponent implements OnInit {
     this.groupForm = this.formBuilder.group({
       name: [''],
       group_type: [],
-      // email: [''],
-      rows: new FormArray([
+      email: new FormArray([
         // this.formBuilder.group({email: [""]})
       ]),
     });
@@ -56,8 +55,8 @@ export class ChatComponent implements OnInit {
     });
   }
 
-  get rows() {
-    return this.groupForm.get('rows') as FormArray;
+  get email() {
+    return this.groupForm.get('email') as FormArray;
   }
 
   ngOnInit(): void {
@@ -95,17 +94,17 @@ export class ChatComponent implements OnInit {
     });
   }
   onGetUserId(): any {
-    this.chatService.SelectUser(this.groupForm.value.rows).subscribe((data) => {
+    this.chatService.SelectUser(this.groupForm.value.email).subscribe((data) => {
       console.log(this.groupForm.value.rows);
       console.log('UserID:', data);
     });
   }
   onAddRow() {
-    this.rows.push(this.formBuilder.group({email: []}));
-    console.log(this.rows.value);
+    this.email.push(this.formBuilder.group({email: []}));
+    console.log(this.email.value);
 
   }
   onRemoveRow(rowIndex: number) {
-    this.rows.removeAt(rowIndex);
+    this.email.removeAt(rowIndex);
   }
 }

@@ -13,6 +13,7 @@ export class GroupChat {
   id!: Number;
   name!: String;
   group_type!: Number;
+  email!: Array<any>;
 }
 
 @Injectable({
